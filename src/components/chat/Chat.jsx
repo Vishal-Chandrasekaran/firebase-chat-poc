@@ -28,7 +28,7 @@ const Chat = () => {
     useChatStore();
 
   const endRef = useRef(null);
-
+  console.log("testing");
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat?.messages]);
