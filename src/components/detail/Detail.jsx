@@ -26,6 +26,7 @@ const Detail = () => {
 
   const handleLogout = () => {
     auth.signOut();
+    localStorage.removeItem("isLogged")
     resetChat()
   };
 

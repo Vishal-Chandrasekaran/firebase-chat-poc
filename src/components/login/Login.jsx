@@ -15,7 +15,8 @@ const Login = () => {
     url: "",
   });
 
-  const [loading, setLoading] = useState(false);
+  const [regLoad, setRegLoad] = useState(false);
+  const [loginLoad, setLoginLoad] = useState(false);
 
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
@@ -28,7 +29,7 @@ const Login = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setRegLoad(true);
     const formData = new FormData(e.target);
 
     const { username, email, password } = Object.fromEntries(formData);
@@ -63,29 +64,37 @@ const Login = () => {
         chats: [],
       });
 
+      e.target.reset();
+      setAvatar({
+        file:null,
+        url:""
+      })
       toast.success("Account created! You can login now!");
     } catch (err) {
       console.log(err);
       toast.error(err.message);
     } finally {
-      setLoading(false);
+      setRegLoad(false);
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoginLoad(true);
 
     const formData = new FormData(e.target);
     const { email, password } = Object.fromEntries(formData);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem("isLogged",res);
+      toast.success("Logged In successfully!");
+      setTimeout(()=>{window.location.reload()},[5500])
     } catch (err) {
       console.log(err);
       toast.error(err.message);
     } finally {
-      setLoading(false);
+      setLoginLoad(false);
     }
   };
 
@@ -96,7 +105,7 @@ const Login = () => {
         <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
           <input type="password" placeholder="Password" name="password" />
-          <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
+          <button disabled={loginLoad}>{loginLoad ? "Loading" : "Sign In"}</button>
         </form>
       </div>
       <div className="separator"></div>
@@ -116,7 +125,7 @@ const Login = () => {
           <input type="text" placeholder="Username" name="username" />
           <input type="text" placeholder="Email" name="email" />
           <input type="password" placeholder="Password" name="password" />
-          <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
+          <button disabled={regLoad}>{regLoad ? "Loading" : "Sign Up"}</button>
         </form>
       </div>
     </div>

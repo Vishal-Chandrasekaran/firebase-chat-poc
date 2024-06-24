@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState,useEffect } from "react";
 import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
 import List from "./components/list/List";
@@ -12,6 +12,8 @@ import { useChatStore } from "./lib/chatStore";
 const App = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   const { chatId } = useChatStore();
+  const isLogged = localStorage.getItem("isLogged");
+  const [toggleDetail,setToggleDetail] = useState(false);
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
@@ -27,11 +29,11 @@ const App = () => {
 
   return (
     <div className="container">
-      {currentUser ? (
+      {currentUser&&isLogged ? (
         <>
           <List />
-          {chatId && <Chat />}
-          {chatId && <Detail />}
+          {chatId && <Chat setState={setToggleDetail} />}
+          {(chatId &&  toggleDetail) && <Detail />}
         </>
       ) : (
         <Login />

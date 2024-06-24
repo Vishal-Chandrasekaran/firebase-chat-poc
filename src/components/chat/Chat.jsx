@@ -14,7 +14,7 @@ import { useUserStore } from "../../lib/userStore";
 import upload from "../../lib/upload";
 import { format } from "timeago.js";
 
-const Chat = () => {
+const Chat = ({setState}) => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
@@ -111,6 +111,8 @@ const Chat = () => {
     }
   };
 
+  const handleDetail = () => {setState((prev)=>!prev)}
+
   return (
     <div className="chat">
       <div className="top">
@@ -124,7 +126,7 @@ const Chat = () => {
         <div className="icons">
           <img src="./phone.png" alt="" />
           <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src="./info.png" alt=""  onClick={handleDetail} />
         </div>
       </div>
       <div className="center">
